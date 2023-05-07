@@ -19,7 +19,7 @@ public class HttpTest {
         String url = "https://jsonplaceholder.typicode.com";
 
         //GET
-        HttpResponse<String> response = HttpUtil.sendGet(url);
+        HttpResponse<String> response = HttpUtils.sendGet(url);
         System.out.println("Server response for GET - " + response.statusCode());
 //        System.out.println(response.body());
 //        HttpResponse<String> response = HttpUtil.sendGet(url);
@@ -32,7 +32,7 @@ public class HttpTest {
         newUser.setName("Robert Bobkoff");
         newUser.setUsername("Bobb");
 
-        HttpResponse<String> createNewUser = HttpUtil.sendPost(url + "/users", newUser);
+        HttpResponse<String> createNewUser = HttpUtils.sendPost(url + "/users", newUser);
 
         System.out.println("Status code " + createNewUser.statusCode());
         System.out.println("New user is created \n" + createNewUser.body());
@@ -45,7 +45,7 @@ public class HttpTest {
         int id = 5;
         updateUser.setName("Maria Mirabella");
         updateUser.setUsername("Masha");
-        HttpResponse<String> editUser = HttpUtil.sendPut(url + "/users/" + id, updateUser);
+        HttpResponse<String> editUser = HttpUtils.sendPut(url + "/users/" + id, updateUser);
         System.out.println("Status code " + editUser.statusCode());
         System.out.println("Updated user id:" + id);
         System.out.println(editUser.body());
@@ -57,15 +57,15 @@ public class HttpTest {
         System.out.println("To delete user enter id:");
         int deleteId = scanner1.nextInt();
 
-        HttpUtil.sendDelete(url + "/users/" + deleteId, deleteId);
+        HttpUtils.sendDelete(url + "/users/" + deleteId, deleteId);
         System.out.println("======================================================\n");
 
         System.out.println("*** отримання інформації про всіх користувачів ***");
         System.out.println("All users: \n");
-        HttpUtil.getList(url + "/users", User.class).forEach(System.out::println);
+        HttpUtils.getList(url + "/users", User.class).forEach(System.out::println);
 //        System.out.println(HttpUtil.getList(url));
         // записати інфо про всіх користувачів у файл "users.json"
-        HttpResponse<String> responseAll = HttpUtil.sendGet(url + "/users");
+        HttpResponse<String> responseAll = HttpUtils.sendGet(url + "/users");
         FileWriter fileWriter = new FileWriter("users.json");
         fileWriter.write(responseAll.body());
         fileWriter.close();
@@ -75,7 +75,7 @@ public class HttpTest {
         System.out.println("*** отримання інформації про користувача по username ***");
         String username = "Kamren";
 
-        HttpResponse<String> responseUserName = HttpUtil.sendGet(url + "/users?username=" + username);
+        HttpResponse<String> responseUserName = HttpUtils.sendGet(url + "/users?username=" + username);
         System.out.println("Status code " + responseUserName.statusCode());
         System.out.println("User with username " + username + ": \n" + responseUserName.body());
         System.out.println("======================================================\n");
@@ -86,7 +86,7 @@ public class HttpTest {
         System.out.println("Enter user id:");
         int inputId = scanner2.nextInt();
 
-        HttpResponse<String> responseId = HttpUtil.sendGet(url + "/users/" + inputId);
+        HttpResponse<String> responseId = HttpUtils.sendGet(url + "/users/" + inputId);
         System.out.println("Status code " + responseId.statusCode());
         System.out.println("User info: \n" + responseId.body());
 
@@ -100,16 +100,16 @@ public class HttpTest {
 //        System.out.println("To get the last user comments enter its id:");
 //        int userId = scanner3.nextInt();
 
-        List<Post> userPosts = HttpUtil.getList(url + "/users/" + inputId + "/posts", Post.class);
+        List<Post> userPosts = HttpUtils.getList(url + "/users/" + inputId + "/posts", Post.class);
 
         int lastPost = userPosts.stream()
                 .map(Post::getId)
                 .max(Integer::compare).get();
 
-        List<Comment> comments = HttpUtil.getList(url + "/posts/" + lastPost + "/comments", Comment.class);
+        List<Comment> comments = HttpUtils.getList(url + "/posts/" + lastPost + "/comments", Comment.class);
         comments.forEach(System.out::println);
 
-        HttpResponse<String> responseComment = HttpUtil.sendGet(url + "/posts/" + lastPost + "/comments");
+        HttpResponse<String> responseComment = HttpUtils.sendGet(url + "/posts/" + lastPost + "/comments");
         FileWriter fw = new FileWriter("user-" + inputId + "-post-" + lastPost + "-comments.json");
         fw.write(responseComment.body());
         fw.close();
@@ -120,7 +120,7 @@ public class HttpTest {
 //        Scanner scanner4 = new Scanner(System.in);
 //        System.out.println("Enter user id:");
 //        int userId = scanner4.nextInt();
-        List<ToDo> todos = HttpUtil.getList(url + "/users/" + inputId + "/posts", ToDo.class);
+        List<ToDo> todos = HttpUtils.getList(url + "/users/" + inputId + "/posts", ToDo.class);
         todos.stream()
                 .filter(t -> !t.isCompleted())
                 .toList()

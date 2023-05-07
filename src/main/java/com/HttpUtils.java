@@ -14,7 +14,7 @@ import com.dto.User;
 import com.google.gson.reflect.TypeToken;
 
 
-public class HttpUtil {
+public class HttpUtils {
 
     private static final HttpClient CLIENT = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_1_1)
