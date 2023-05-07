@@ -1,1 +1,10 @@
 /target/
+/.idea/
+/renewUser.txt
+/getUser.txt
+/createUser.txt
+/userList.txt
+/deleteUser.txt
+/jsoup-ru.pdf
+/Screenshot 2023-05-02 123931.png
+/src/test/
