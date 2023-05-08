@@ -76,9 +76,11 @@ public class HttpTest {
         HttpResponse<String> responseUserName = HttpUtils.sendGet(url + "/users?username=" + username);
         System.out.println("Status code " + responseUserName.statusCode());
         System.out.println("User with username " + username + ":");
-        System.out.println(responseUserName.body());
-//        User userName = new Gson().fromJson(responseUserName.body(), User.class);
-//        System.out.println("User info: \n" + userName);
+//        System.out.println(responseUserName.body());
+        String json1 = responseUserName.body().replace("[","");
+        String json2 = json1.replace("]","");
+        User userName = new Gson().fromJson(json2, User.class);
+        System.out.println("User info: \n" + userName);
         System.out.println("======================================================\n");
 
         //*** отримання інформації про користувача по id ***
