@@ -45,7 +45,7 @@ public class HttpUtils {
     }
 
 
-//    //POST***************************
+//  //POST***************************
     public static HttpResponse<String> sendPost(String url, User user) throws IOException, InterruptedException {
 
         String body = new Gson().toJson(user);
@@ -68,8 +68,6 @@ public class HttpUtils {
 
     //DELETE***************************************
     public static void sendDelete(String url, int id) throws IOException, InterruptedException {
-//    public static void sendDelete(URI uri, User user) throws IOException, InterruptedException {
-//        String body = new Gson().toJson(user);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -79,7 +77,8 @@ public class HttpUtils {
                 .build();
 
         HttpResponse<String> responseDelete = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println("User id: " + id + " is deleted. \nStatus code " + responseDelete.statusCode());
+        System.out.println("User id: " + id + " is deleted.");
+        System.out.println("Status code " + responseDelete.statusCode());
 //        System.out.println(CLIENT.send(request, HttpResponse.BodyHandlers.ofString()).statusCode());
     }
 
