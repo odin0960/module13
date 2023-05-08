@@ -129,6 +129,7 @@ public class HttpTest {
         todosUncompleted.forEach(t -> System.out.println(t.getId() + ": " + t.getTitle()));
         //                .forEach(System.out::println);
 
+        //Записати todos у файл todosUncompleted.json
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         String json = gson.toJson(todosUncompleted);
