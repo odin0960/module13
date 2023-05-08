@@ -1,5 +1,6 @@
 package com;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.http.HttpResponse;
@@ -12,6 +13,7 @@ import com.dto.Post;
 import com.dto.ToDo;
 import com.dto.User;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class HttpTest {
     public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
@@ -77,8 +79,8 @@ public class HttpTest {
         System.out.println("Status code " + responseUserName.statusCode());
         System.out.println("User with username " + username + ":");
 //        System.out.println(responseUserName.body());
-        String json1 = responseUserName.body().replace("[","");
-        String json2 = json1.replace("]","");
+        String json1 = responseUserName.body().replace("[", "");
+        String json2 = json1.replace("]", "");
         User userName = new Gson().fromJson(json2, User.class);
         System.out.println("User info: \n" + userName);
         System.out.println("======================================================\n");
@@ -99,9 +101,6 @@ public class HttpTest {
 
         //*** всі коментарі до останнього поста певного користувача
         System.out.println("*** всі коментарі до останнього поста певного користувача");
-//        Scanner scanner3 = new Scanner(System.in);
-//        System.out.println("To get the last user comments enter its id:");
-//        int userId = scanner3.nextInt();
 
         List<Post> userPosts = HttpUtils.getList(url + "/users/" + inputId + "/posts", Post.class);
 
@@ -122,19 +121,20 @@ public class HttpTest {
 
         //всі відкриті задачі для користувача inputId
         System.out.println("всі відкриті задачі для користувача: " + inputId);
-//        Scanner scanner4 = new Scanner(System.in);
-//        System.out.println("Enter user id:");
-//        int userId = scanner4.nextInt();
         List<ToDo> todos = HttpUtils.getList(url + "/users/" + inputId + "/todos", ToDo.class);
 
-        todos.stream()
+        List<ToDo> todosUncompleted = todos.stream()
                 .filter(t -> !t.isCompleted())
-                .forEach(t -> System.out.println(t.getId() + ": " + t.getTitle()));
-//                .forEach(System.out::println);
+                .toList();
+        todosUncompleted.forEach(t -> System.out.println(t.getId() + ": " + t.getTitle()));
+        //                .forEach(System.out::println);
 
-        HttpResponse<String> responseToDos = HttpUtils.sendGet(url + "/users/" + inputId + "/todos");
-        FileWriter fw3 = new FileWriter("./files/todos.json");
-        fw3.write(responseToDos.body());
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        String json = gson.toJson(todosUncompleted);
+
+        FileWriter fw3 = new FileWriter("./files/todosUncompleted.json");
+        fw3.write(json);
         fw3.close();
         System.out.println("======================================================\n");
     }
